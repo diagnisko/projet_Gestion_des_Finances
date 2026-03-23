@@ -7,7 +7,7 @@ const Footer = () => {
 
         {/* CTA Banner */}
         <div className="relative bg-linear-to-r from-[#0d2420] via-[#0d1f2d] to-[#0d1526] border border-[#00d4aa]/20 rounded-2xl p-10 mb-16 overflow-hidden text-center">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-[#00d4aa]/10 rounded-full blur-[60px] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-100 h-50 bg-[#00d4aa]/10 rounded-full blur-[60px] pointer-events-none" />
           <div className="relative z-10">
             <h2 className="font-display font-bold text-3xl lg:text-4xl mb-3">
               Commencez dès aujourd'hui.<br />
