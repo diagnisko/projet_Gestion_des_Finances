@@ -1,0 +1,102 @@
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
+import LandingPage from './components/landing/LandingPage';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import ForgotPasswordPage from './pages/ForgotPassword';
+import DashboardPage from './pages/Dashboard';
+import TransactionsPage from './pages/Transactions';
+import StatisticsPage from './pages/Statistics';
+import ProfilePage from './pages/Profile';
+
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
+function AuthRedirect({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route
+        path="/login"
+        element={<AuthRedirect><LoginPage /></AuthRedirect>}
+      />
+      <Route
+        path="/register"
+        element={<AuthRedirect><RegisterPage /></AuthRedirect>}
+      />
+      <Route
+        path="/forgot-password"
+        element={<AuthRedirect><ForgotPasswordPage /></AuthRedirect>}
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <RequireAuth>
+            <DashboardPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/transactions"
+        element={
+          <RequireAuth>
+            <TransactionsPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/statistics"
+        element={
+          <RequireAuth>
+            <StatisticsPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <RequireAuth>
+            <ProfilePage />
+          </RequireAuth>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;
